@@ -1,0 +1,77 @@
+# Product Requirements Document (PRD)
+
+## Project Name  
+Golden Squirrel Interviewer (working title)
+
+## Purpose  
+Build an AI-powered video content creator that allows users to submit interview scripts. The system verifies and optionally modifies the script for better match with creator video clips, then generates mashup videos “interviewing” creators/celebs.
+
+## Key Features
+
+### 1. Script Input  
+- Text area for users to enter interview scripts (1–3 sentences per line).  
+- Option to specify one or more target creators.
+
+### 2. Script Verification & Approval  
+- AI verifies script against available video clips.  
+- Suggests modifications if exact matches are missing, with reasons.  
+- Side-by-side UI for users to review, edit, and approve the verified script.
+
+### 3. Clip Search & Retrieval  
+- Searches a vector-indexed database of video clips with transcripts.  
+- Retrieves timestamped clips matching each approved script line.
+
+### 4. Video Stitching  
+- Stitches selected clips into a seamless video with audio.  
+- Adds branding overlays and subtitles optionally.
+
+### 5. Preview & Export  
+- Allows users to preview the final video.  
+- Provides options to download or share on social platforms.
+
+## User Stories
+
+- As a content creator, I want to input a script and have the AI suggest adjustments to fit available clips.  
+- As a user, I want to approve or edit suggested script changes before video generation.  
+- As a marketer, I want to create branded mashup videos “interviewing” popular creators quickly.  
+- As a developer, I want modular APIs to connect script verification, clip search, and video stitching independently.
+
+## Success Metrics  
+- User script approval rate ≥ 90%.  
+- Video generation time < 2 minutes per video.  
+- 80% user satisfaction score on content relevance.  
+- 1000+ videos generated within first 3 months.
+
+## Milestones
+
+| Milestone              | Deliverable                             | ETA         |
+|------------------------|---------------------------------------|-------------|
+| MVP UI + Script Input  | Functional input and submit form      | 2 weeks     |
+| Script Verification API| AI integration with suggestions       | 3 weeks     |
+| Clip Search API        | Indexed DB + clip retrieval            | 4 weeks     |
+| Video Stitching API    | FFmpeg pipeline for video generation  | 5 weeks     |
+| Preview + Export UI    | Video playback and download            | 6 weeks     |
+
+## Tech Stack
+
+- Frontend: React + Cursor IDE  
+- Backend: Node.js serverless functions or Python APIs  
+- Storage: Supabase or Firebase  
+- AI: OpenAI GPT-4, WhisperX for transcripts  
+- Search: Weaviate or Pinecone vector DB  
+- Video Processing: FFmpeg or Remotion
+
+## Risks & Mitigations  
+- *Risk:* Mismatch between script and clip availability.  
+  *Mitigation:* Transparent verification step and user approval.  
+- *Risk:* Video stitching latency.  
+  *Mitigation:* Optimize clip lengths and caching.  
+- *Risk:* Copyright issues with creator content.  
+  *Mitigation:* Use clips under fair use or licenses, add branding.
+
+## Open Questions  
+- Which vector DB service to start with? (Weaviate vs Pinecone)  
+- Hosting options for FFmpeg-intensive tasks?  
+- How to handle clip licensing and content rights?
+
+---

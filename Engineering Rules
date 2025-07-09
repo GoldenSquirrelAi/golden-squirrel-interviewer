@@ -1,0 +1,173 @@
+
+## Purpose  
+Ensure **maintainability**, **safety**, and **developer velocity**.  
+- **MUST** rules are enforced by CI  
+- **SHOULD** rules are strongly recommended  
+
+---
+
+## 1 — Before Coding
+
+- **BP-1 (MUST)** Ask the user clarifying questions.  
+- **BP-2 (SHOULD)** Draft and confirm an approach for complex work.  
+- **BP-3 (SHOULD)** If ≥ 2 approaches exist, list clear pros and cons.  
+
+---
+
+## 2 — While Coding
+
+- **C-1 (MUST)** Follow TDD: scaffold stub → write failing test → implement.  
+- **C-2 (MUST)** Name functions with existing domain vocabulary for consistency.  
+- **C-3 (SHOULD NOT)** Introduce classes when small, testable functions suffice.  
+- **C-4 (SHOULD)** Prefer simple, composable, testable functions.  
+- **C-5 (MUST)** Prefer branded `type`s for IDs:
+
+```ts
+type UserId = Brand<string, 'UserId'> // ✅ Good  
+type UserId = string                 // ❌ Bad
+C-6 (MUST) Use import type { ... } for type-only imports.
+
+C-7 (SHOULD NOT) Add comments except for critical caveats; rely on self-explanatory code.
+
+C-8 (SHOULD) Default to type; use interface only when merging or readability demands.
+
+C-9 (SHOULD NOT) Extract a new function unless it:
+
+is reused elsewhere,
+
+is the only way to unit-test untestable logic,
+
+or drastically improves readability.
+
+3 — Testing
+T-1 (MUST) For simple functions, colocate unit tests in *.spec.ts in same directory.
+
+T-2 (MUST) For any API changes, extend tests in packages/api/test/*.spec.ts.
+
+T-3 (MUST) Always separate pure logic tests from DB-touching ones.
+
+T-4 (SHOULD) Prefer integration tests over heavy mocking.
+
+T-5 (SHOULD) Thoroughly unit-test complex algorithms.
+
+T-6 (SHOULD) Test entire structure in one assertion if reasonable.
+
+ts
+Copy
+expect(result).toBe([value])       // ✅ Good  
+expect(result).toHaveLength(1)     // ❌ Bad  
+expect(result[0]).toBe(value)      // ❌ Bad
+4 — Database
+D-1 (MUST) Type DB helpers as:
+
+ts
+Copy
+KyselyDatabase | Transaction<Database>
+D-2 (SHOULD) Override incorrect generated types in:
+
+ts
+Copy
+packages/shared/src/db-types.override.ts
+5 — Code Organization
+O-1 (MUST) Place code in packages/shared only if used by ≥ 2 packages.
+
+6 — Tooling Gates
+G-1 (MUST) prettier --check must pass.
+
+G-2 (MUST) turbo typecheck lint must pass.
+
+7 — Git
+GH-1 (MUST) Use Conventional Commits.
+
+GH-2 (SHOULD NOT) Refer to Claude or Anthropic in commit messages.
+
+Writing Functions Best Practices
+Checklist to evaluate if a function is good:
+
+Can you easily follow what it's doing?
+
+Does it have high cyclomatic complexity or deep nesting?
+
+Could standard data structures make it clearer?
+
+Are any parameters unused?
+
+Are there unnecessary type casts?
+
+Is the function testable without mocking core dependencies?
+
+Any untested hidden dependencies?
+
+Brainstorm 3 better function names.
+
+Refactor only if:
+Used in multiple places
+
+More testable
+
+Easier to follow vs original
+
+Writing Tests Best Practices
+SHOULD parameterize inputs (avoid 42, "foo" directly).
+
+SHOULD NOT write trivial tests.
+
+Ensure test descriptions match assertions.
+
+Compare against pre-computed expectations or domain rules.
+
+Follow strict lint/type/style rules.
+
+Express invariants or axioms via property-based testing when applicable.
+
+Code Layout Guidelines
+bash
+Copy
+packages/api             - Fastify API server  
+packages/api/src/publisher/*.ts - Logic for social media platforms  
+packages/web             - Next.js 15 w/ App Router  
+packages/shared          - Shared types/utilities  
+packages/shared/social.ts - Media size/char limit rules  
+packages/api-schema      - API schemas (TypeBox)
+Remember Shortcuts (Used in IDE)
+QNEW
+css
+Copy
+Understand all BEST PRACTICES listed in CLAUDE.md.  
+Your code SHOULD ALWAYS follow them.
+QPLAN
+diff
+Copy
+Analyze similar code and ensure your plan:  
+- Is consistent  
+- Minimizes changes  
+- Reuses code
+QCODE
+go
+Copy
+Implement your plan, make sure tests pass.  
+Run tests, `prettier`, and typecheck.
+QCHECK
+markdown
+Copy
+Act as a skeptical senior engineer.  
+Review for all major changes using:
+1. Writing Functions checklist  
+2. Writing Tests checklist  
+3. Implementation checklist
+QCHECKF
+sql
+Copy
+Skeptical review of all major function changes using Function checklist.
+QCHECKT
+sql
+Copy
+Skeptical review of all major test changes using Test checklist.
+QUX
+arduino
+Copy
+Human UX tester. Output prioritized test scenarios for new feature.
+QGIT
+pgsql
+Copy
+Final checklist before commit. Follow Conventional Commits.
